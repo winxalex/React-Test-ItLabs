@@ -1,11 +1,36 @@
 {
+    "free": {
+        "Name": "free",
+        "Text": "The basics for private and secure communications",
+        "options": [
+            "Supports folders, labels, filters, auto-replay, IMAP/SMTP and more",
+            "ProtonVPN(optional)*"
+        ]
+    },
     "plus": {
-        "Name": "plus"
+        "isPopular": 1,
+        "Name": "plus",
+        "Text": "Full-featured mailbox with advanced protection",
+        "options": [
+            "Supports folders, labels, filters, auto-replay, IMAP/SMTP and more",
+            "ProtonVPN(optional)*"
+        ]
     },
     "professional": {
-        "Name": "professional"
+        "Name": "professional",
+        "Text": "ProtonMail for professionals and businesses",
+        "options": [
+            "Catch all email, multi user management, priority support and more",
+            "ProtonVPN(optional)*"
+        ]
     },
     "visionary": {
-        "Name": "visionary"
+        "Name": "visionary",
+        "Text": "Full-featured mailbox with advanced protection",
+        "options": [
+            "Includes all features",
+            "Priority support",
+            "Includes ProtonVPN"
+        ]
     }
 }
