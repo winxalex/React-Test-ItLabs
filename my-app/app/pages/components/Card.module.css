@@ -674,6 +674,7 @@
 }
 
 .card-title {
+  font-size: xx-large;
   margin-bottom: 0.75rem;
 }
 
@@ -902,6 +903,15 @@
   vertical-align: middle;
 }
 
-
-
-  
+.titleRightBadge{
+  font-size: small;
+}
+.titleLeftBadge{
+  font-size: small;
+}
+.cardTitleDescripiton {
+  font-size: normal;
+}
+.cardPopularText {
+  font-size: normal;
+}

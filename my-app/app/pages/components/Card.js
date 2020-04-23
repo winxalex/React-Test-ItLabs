@@ -3,23 +3,26 @@ import styles from './card.module.css'
 
 
 
-export default function Card({ }) {
+export default function Card({ subtitle, titleLeftBadge, title, titleRightBadge, titleDescription, text, options, isPopular, onSelect }) {
     return (
         <div className={styles.card} style={{ minWidth: 200, maxWidth: 400 }} >
 
             <div className={styles["card-body"]}>
-                <h4 className={`${styles["card-title"]} text-center`} style={{ color: "green" }}>MOST POPULAR</h4>
-                <h3 className={`${styles["card-title"]} text-center text-uppercase font-weight-bold`}>PROffESIONAL</h3>
+                {
+
+                    <h4 className={`${styles.cardPopularText} text-center`} style={{ color: "green" }}>{isPopular && "MOST POPULAR"}</h4>
+                }
+                <h3 className={`${styles["card-subtitle"]} text-center text-uppercase font-weight-bold`}>{subtitle}</h3>
                 <div className={`text-center`}>
-                    <span style={{ fontSize: 12 }}>&#36; &euro;&#67;&#72;&#70;</span>&nbsp;
-                        <span style={{ fontSize: 40 }}>45</span>
-                    <span>&#47;mo</span>
+                    <span className={styles.titleLeftBadge}>{titleLeftBadge}</span>&nbsp;
+                        <span className={styles["card-title"]}>ggg{title}</span>
+                    <span className={styles.titleRightBadge}>{titleRightBadge}</span>
                 </div>
-                <h5 className={`${styles["card-text"]} text-center`}>Billed as $288 per year</h5>
+                <h5 className={`styles.cardTitleDescripiton text-center`}>{titleDescription}</h5>
 
             </div>
             <br />
-            <p className={`${styles["card-text"]} text-center`}>With supporting text below as a natural lead-in to additional content.</p>
+            <p className={`${styles["card-text"]} text-center`}>{text}</p>
             <ul className={styles.cardList}>
 
                 <li className={styles.cardListItem}>
@@ -38,7 +41,7 @@ export default function Card({ }) {
             <br />
             <br />
             <div className={`text-center`}>
-                <a href="#" className={`${styles.btn} ${styles["btn-primary"]} text-center`}>Select</a>
+                <a href="#" className={`${styles.btn} ${styles["btn-primary"]} text-center`} onClick={onSelect}>Select</a>
             </div>
         </div>
 
