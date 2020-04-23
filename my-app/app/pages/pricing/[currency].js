@@ -133,42 +133,51 @@ const Plans = ({ plans }) => {
 
     return (
         <div>
+
             <Layout>
-                <div style={{ float: "right" }}>
-                    <select onChange={handleCycleChange}>
-                        <option>Monthly</option>
-                        <option>Annually</option>
-                        <option>2 years</option>
-                    </select>
+                <div className="row justify-content-end" >
+                    <div className="col-100" >
+                        <select onChange={handleCycleChange}>
+                            <option>Monthly</option>
+                            <option>Annually</option>
+                            <option>2 years</option>
+                        </select>
 
-                    <select value={state.currency} onChange={handleCurrencyChange}>
-                        {
-                            Object.keys(currencyConfig).map((el, i) =>
-                                <option key={i}>{el}</option>
-                            )
-                        }
+                        <select styles={{ width: "150px" }} value={state.currency} onChange={handleCurrencyChange}>
+                            {
+                                Object.keys(currencyConfig).map((el, i) =>
+                                    <option key={i}>{el}</option>
+                                )
+                            }
 
-                    </select>
+                        </select></div>
+
+                    <div className="w-100"></div>
+                    <div className="col-100">
+                        <CardGroup>
+                            {
+
+                                plans.map((plan, index) =>
+
+                                    <Card key={index}
+                                        title={plansToTitle(plan)}
+                                        subtitle={plan.Name}
+                                        titleRightBadge={plansToRightBadge(plan)}
+                                        titleLeftBadge={plansToLeftBadge(plan)}
+                                        titleDescription={plansToTitleDescription(plan)}
+                                        text={plansToText(plan)}
+                                        isPopular={plansConfig[plan.Name] && plansConfig[plan.Name].isPopular}
+                                        options={plansToOptions(plan)}></Card>
+
+                                )
+                            }
+
+                        </CardGroup>
+                    </div>
+
                 </div>
-                <CardGroup>
-                    {
 
-                        plans.map((plan, index) =>
 
-                            <Card key={index}
-                                title={plansToTitle(plan)}
-                                subtitle={plan.Name}
-                                titleRightBadge={plansToRightBadge(plan)}
-                                titleLeftBadge={plansToLeftBadge(plan)}
-                                titleDescription={plansToTitleDescription(plan)}
-                                text={plansToText(plan)}
-                                isPopular={plansConfig[plan.Name] && plansConfig[plan.Name].isPopular}
-                                options={plansToOptions(plan)}></Card>
-
-                        )
-                    }
-
-                </CardGroup>
             </Layout>
 
         </div>
