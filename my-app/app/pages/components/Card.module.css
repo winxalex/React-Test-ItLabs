@@ -887,8 +887,8 @@
 
 
 .cardList{
-  
-}
+  padding-left: 0;
+} 
 .cardListItem{
  
   list-style-type:none;
