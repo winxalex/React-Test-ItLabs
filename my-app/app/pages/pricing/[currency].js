@@ -23,6 +23,9 @@ const myInit = {
     cache: 'default'
 };
 
+const MONTH = "1";
+const YEAR = "12";
+const YEARS_2 = "24";
 
 const Plans = ({ plans }) => {
 
@@ -32,26 +35,30 @@ const Plans = ({ plans }) => {
 
     const [state, setState] = useState({ cycle: "1", currency: currency })
 
+    //filter only plans defined in config + free (I coudn't find in api call)
+    plans = plans.filter(el => Object.keys(plansConfig).includes(el.Name));
+    plans.unshift(plansConfig.free);
 
-    // console.log(plansConfig);
 
     const handleCurrencyChange = (e) => {
         e.preventDefault();
 
+
         setState({ ...state, currency: e.target.value });
         router.push("/pricing/" + e.target.value);
+
     }
 
 
     const handleCycleChange = (e) => {
 
         const selection = e.target.value;
-        let cycle = "1";
+        let cycle = MONTH;
 
-        if (selection === "Anually") {
-            cycle = "12";
+        if (selection === "Annually") {
+            cycle = YEAR;
         } else if (selection === "2 years") {
-            cycle = "24";
+            cycle = YEARS_2;
         }
 
         setState({ ...state, cycle });
@@ -69,21 +76,27 @@ const Plans = ({ plans }) => {
         return currencyConfig[state.currency].sign;
     }
     function plansToRightBadge({ Pricing }) {
-        return "/mo";
+        if (Pricing)
+            return "/mo";
     }
     function plansToTitle({ Pricing }) {
-        return Pricing["1"] * 0.01;
+        if (Pricing)
+            return Pricing[MONTH] * 0.01;
+        return 0;
     }
     function plansToTitleDescription({ Pricing }) {
-        const { cycle } = state;
+        if (Pricing) {
 
-        if (cycle === "12") {
-            return `Billed ${Pricing[cycle] * 0.01} per year`;
-        } else if (cycle === "24") {
-            return `Billed ${Pricing[cycle] * 0.01} per 2 years`;
+            const { cycle } = state;
+
+            if (cycle === YEAR) {
+                return `Billed ${plansToLeftBadge()} ${Pricing[cycle] * 0.01} per year`;
+            } else if (cycle === YEARS_2) {
+                return `Billed ${plansToLeftBadge()} ${Pricing[cycle] * 0.01} per 2 years`;
+            }
+
+            return "Billed per month";
         }
-
-        return "Billed per month";
     }
     function plansToText({ Name }) {
         if (plansConfig[Name])
@@ -129,13 +142,17 @@ const Plans = ({ plans }) => {
                     </select>
 
                     <select value={state.currency} onChange={handleCurrencyChange}>
-                        <option>EUR</option>
-                        <option>USD</option>
-                        <option>CHF</option>
+                        {
+                            Object.keys(currencyConfig).map((el, i) =>
+                                <option key={i}>{el}</option>
+                            )
+                        }
+
                     </select>
                 </div>
                 <CardGroup>
                     {
+
                         plans.map((plan, index) =>
 
                             <Card key={index}
@@ -145,7 +162,7 @@ const Plans = ({ plans }) => {
                                 titleLeftBadge={plansToLeftBadge(plan)}
                                 titleDescription={plansToTitleDescription(plan)}
                                 text={plansToText(plan)}
-                                isPopular={plansToLeftBadge(plan)}
+                                isPopular={plansConfig[plan.Name] && plansConfig[plan.Name].isPopular}
                                 options={plansToOptions(plan)}></Card>
 
                         )

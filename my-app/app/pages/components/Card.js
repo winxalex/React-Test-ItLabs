@@ -8,9 +8,12 @@ export default function Card({ subtitle, titleLeftBadge, title, titleRightBadge,
         <div className={styles.card} style={{ minWidth: 200, maxWidth: 400 }} >
 
             <div className={styles["card-body"]}>
-                {
 
-                    <h4 className={`${styles.cardPopularText} text-center`} style={{ color: "green" }}>{isPopular && "MOST POPULAR"}</h4>
+                {
+                    isPopular ?
+                        <h4 className={`${styles.cardPopularText} text-center`} >MOST POPULAR</h4>
+                        :
+                        <h4> &nbsp;</h4>
                 }
                 <h3 className={`${styles["card-subtitle"]} text-center text-uppercase font-weight-bold`}>{subtitle}</h3>
                 <div className={`text-center`}>

@@ -3,9 +3,12 @@
         "Name": "free",
         "Text": "The basics for private and secure communications",
         "options": [
-            "Supports folders, labels, filters, auto-replay, IMAP/SMTP and more",
             "ProtonVPN(optional)*"
-        ]
+        ],
+        "MaxDomains": 0,
+        "MaxAddresses": 1,
+        "MaxSpace": 524288000,
+        "MaxMembers": 1
     },
     "plus": {
         "isPopular": 1,
