@@ -26,6 +26,7 @@ const myInit = {
 const MONTH = "1";
 const YEAR = "12";
 const YEARS_2 = "24";
+const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
 
 const Plans = ({ plans }) => {
 
@@ -40,11 +41,15 @@ const Plans = ({ plans }) => {
     plans.unshift(plansConfig.free);
 
 
+
     const handleCurrencyChange = (e) => {
         e.preventDefault();
 
 
         setState({ ...state, currency: e.target.value });
+
+        //!!! Pricing is the same for all currencies
+        //if that is what intented this line can be commeted
         router.push("/pricing/" + e.target.value);
 
     }
@@ -66,25 +71,30 @@ const Plans = ({ plans }) => {
 
 
     function bytesToSize(bytes) {
-        var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+
         if (bytes == 0) return '0 Byte';
         var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
         return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
     }
 
     function plansToLeftBadge() {
+
         return currencyConfig[state.currency].sign;
     }
     function plansToRightBadge({ Pricing }) {
         if (Pricing)
             return "/mo";
     }
-    function plansToTitle({ Pricing }) {
-        if (Pricing)
+    function plansToTitle({ Pricing, Currency }) {
+
+        if (Pricing) {
+
             return Pricing[MONTH] * 0.01;
+        }
         return 0;
     }
     function plansToTitleDescription({ Pricing }) {
+
         if (Pricing) {
 
             const { cycle } = state;
@@ -185,38 +195,54 @@ const Plans = ({ plans }) => {
 }
 
 
-
+//v1 STATIC (created at build time)
 export async function getStaticPaths() {
     // Return a list of possible value for currency
 
-    return {
-        paths: [
+    const paths = [];
 
-            { params: { currency: 'EUR' } },
-            { params: { currency: 'USD' } },
-            { params: { currency: 'CHF' } }
-        ],
+    Object.keys(currencyConfig).forEach(element => {
+        paths.push({ params: { currency: element } })
+    });
+
+    return {
+        paths,
         fallback: false
     }
 
 }
 
 
-
-
-//Currencies available in the selector: EUR, CHF and USD.
 export async function getStaticProps({ params }) {
 
+    // console.log("request " + params.currency);
 
-    const res = await fetch(`https://api.protonmail.ch/payments/plans?${params.currency}`, myInit)
+
+    const res = await fetch(`https://api.protonmail.ch/payments/plans?Currency=${params.currency}`, myInit)
 
     const json = await res.json();
-    //return { stars: json.stargazers_count }
-    console.log(json);
-    // return { props: { stars: json.Plans[0].Name } }
-    //return { props: { stars: JSON.stringify(json) } }
+
+    //console.log(json);
+
     return { props: { plans: json.Plans } }
-    //return { props: { stars: params.i } }
+
 };
+
+
+//V2 SERVER RENDERED (page is rendered on server and sent to client)
+// export async function getServerSideProps({ params }) {
+
+//     console.log("request " + params.currency);
+
+
+//     const res = await fetch(`https://api.protonmail.ch/payments/plans?Currency=${params.currency}`, myInit)
+
+//     const json = await res.json();
+
+//     //console.log(json);
+
+//     return { props: { plans: json.Plans } }
+
+// };
 
 export default Plans
