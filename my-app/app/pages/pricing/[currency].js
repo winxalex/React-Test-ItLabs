@@ -6,6 +6,8 @@ import Card from '../components/card';
 import plansConfig from "./plans.config.json";
 import currencyConfig from "./currency.config.json";
 import { useState } from 'react';
+import PropTypes from 'prop-types'
+import api from '../api.config.json'
 
 
 const myHeaders = {
@@ -34,9 +36,9 @@ const Plans = ({ plans }) => {
     const router = useRouter()
     const { currency } = router.query;
 
-    const [state, setState] = useState({ cycle: "1", currency: currency })
+    const [state, setState] = useState({ cycle: MONTH, currency: currency })
 
-    //filter only plans defined in config + free (I coudn't find in api call)
+    //filter only plans defined in config + free (plan I coudn't find in api call)
     plans = plans.filter(el => Object.keys(plansConfig).includes(el.Name));
     plans.unshift(plansConfig.free);
 
@@ -153,7 +155,7 @@ const Plans = ({ plans }) => {
                         <option>2 years</option>
                     </select>
 
-                    <select styles={{ width: "150px" }} value={state.currency} onChange={handleCurrencyChange}>
+                    <select value={state.currency} onChange={handleCurrencyChange}>
                         {
                             Object.keys(currencyConfig).map((el, i) =>
                                 <option key={i}>{el}</option>
@@ -195,7 +197,7 @@ const Plans = ({ plans }) => {
 }
 
 
-//v1 STATIC (created at build time)
+//v1 STATIC (static html is created and cached at for every path at build time)
 export async function getStaticPaths() {
     // Return a list of possible value for currency
 
@@ -218,7 +220,7 @@ export async function getStaticProps({ params }) {
     // console.log("request " + params.currency);
 
 
-    const res = await fetch(`https://api.protonmail.ch/payments/plans?Currency=${params.currency}`, myInit)
+    const res = await fetch(`${api.getPlansByCurrency}=${params.currency}`, myInit)
 
     const json = await res.json();
 
@@ -244,5 +246,18 @@ export async function getStaticProps({ params }) {
 //     return { props: { plans: json.Plans } }
 
 // };
+
+
+Plans.propTypes = {
+    isPopular: PropTypes.bool,
+    text: PropTypes.string,
+    title: PropTypes.string,
+    subtitle: PropTypes.string,
+    options: PropTypes.arrayOf(PropTypes.string),
+    titleDescription: PropTypes.string,
+    titleLeftBadge: PropTypes.string,
+    titleRightBadge: PropTypes.string
+
+}
 
 export default Plans
